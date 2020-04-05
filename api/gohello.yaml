@@ -1,0 +1,207 @@
+openapi: '3.0.2'
+info:
+  title: gohello
+  description: golang REST service bootstrap for kitabisa backend engineer team.
+  version: '1.0.0'
+servers:
+  - url: http://localhost:4500
+    description: local
+security:
+  - Key: []
+    Secret: []
+paths:
+  /health_check:
+    get:
+      summary: Health Check
+      description: checking service and all dependencies is up and running
+      tags:
+        - system
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+              example:
+                data: []
+                response_code: "000000"
+                response_desc: 
+                  id: ""
+                  en: ""
+                meta:
+                  version: "v1.0.0"
+                  api_status: "stable"
+                  api_env: "local"
+        500:
+          description: Something error on the internal service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+              examples:
+                DBError:
+                  value:
+                    data: []
+                    response_code: "101001"
+                    response_desc: 
+                      id: "Error koneksi ke Database"
+                      en: "Database connection error"
+                    meta:
+                      version: "v1.0.0"
+                      api_status: "stable"
+                      api_env: "local"
+                CacheError:
+                  value:
+                    data: []
+                    response_code: "101002"
+                    response_desc: 
+                      id: "Error koneksi ke Cache server"
+                      en: "Cache connection error"
+                    meta:
+                      version: "v1.0.0"
+                      api_status: "stable"
+                      api_env: "local"
+                InfluxError:
+                  value:
+                    data: []
+                    response_code: "101003"
+                    response_desc: 
+                      id: "Error koneksi ke Influx"
+                      en: "Influx connection error"
+                    meta:
+                      version: "v1.0.0"
+                      api_status: "stable"
+                      api_env: "local"
+
+components:
+  schemas:
+    HealthCheck:
+      type: object
+      description: health check responses
+      required:
+        - response_code
+        - response_desc
+        - meta
+      properties:
+        data: 
+          type: array
+          description: empty
+          items:
+            type: object
+        response_code:
+          type: string
+          description: 6 digits response code
+        response_desc:
+          description: description of response code
+          type: object 
+          properties:
+            id:
+              type: string
+            en:
+              type: string
+        meta:
+          type: object
+          properties:
+            version:
+              type: string
+            api_status:
+              type: string
+            api_env:
+              type: string
+    ResponseBody:
+      type: object
+      description: this is the response format on every request.
+      required:
+        - response_code
+        - response_desc
+        - meta
+      properties:
+        next:
+          type: string
+          description: token for next page of data. Usage, `url?next={next value}`
+        data: 
+          type: array
+          description: array of data object responses. see another schema for the object
+          items:
+            type: object
+        response_code:
+          type: string
+          description: see ResponseCode schema for available list
+        response_desc:
+          type: object 
+          properties:
+            id:
+              type: string
+            en:
+              type: string
+        meta:
+          type: object
+          properties:
+            version:
+              type: string
+              example: v1.0.0
+            api_status:
+              type: string
+              example: stable
+            api_env:
+              type: string
+              example: staging
+    ResponseCode:
+      type: string
+      description: >
+        response code for any error:
+          * `101001` - Database connection error
+          * `101002` - Cache connection error
+          * `101003` - Influx connection error
+  parameters:
+    # our default headers
+    xKtbsRequestId:
+      name: X-Ktbs-Request-ID
+      in: header
+      schema:
+        type: string
+      required: true
+      description: request ID, should be unique for every request. Use uuidv4
+    xKtbsApiVersion:
+      in: header
+      name: X-Ktbs-Api-Version
+      schema:
+        type: string
+      required: true
+      description: version of destination API.
+    xKtbsClientVersion:
+      in: header
+      name: X-Ktbs-Client-Version
+      schema:
+        type: string
+      required: true
+      description: Client version that hit the API.
+    xKtbsPlatformName:
+      in: header
+      name: X-Ktbs-Platform-Name
+      schema:
+        type: string
+      required: true
+      description: Client platform
+    xKtbsClientName:
+      in: header
+      name: X-Ktbs-Client-Name
+      schema:
+        type: string
+      required: true
+      description: name of origin client
+    xKtbsSignature:
+      in: header
+      name: X-Ktbs-Signature
+      schema:
+        type: string
+      required: false
+      description: Our signature, see on gitbook backend section for detail, here https://app.gitbook.com/@kitabisa-engineering/s/backend/standardization-1/api-headers
+    xKtbsTime:
+      in: header
+      name: X-Ktbs-Time
+      schema:
+        type: string
+      required: false
+      description: UTC unix timestamp
