@@ -44,8 +44,3 @@ ingress:
     - host: gohello.zackijack.dev
       paths:
         - "/"
-
-
-autoscaling:
-  minReplicas: 2
-  maxReplicas: 20

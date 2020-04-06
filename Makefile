@@ -5,7 +5,7 @@ VERSION         := $(shell git describe --always --tags)
 GIT_COMMIT       = $(shell git rev-parse HEAD)
 GIT_DIRTY        = $(shell test -n "`git status --porcelain`" && echo "+CHANGES" || true)
 BUILD_DATE       = $(shell date '+%Y-%m-%d-%H:%M:%S')
-DOCKER_REGISTRY  = zackijack
+IMAGE_REGISTRY   = 491248485740.dkr.ecr.ap-southeast-1.amazonaws.com
 TEAM             = backend
 
 .PHONY: default
@@ -34,21 +34,21 @@ build:
 .PHONY: package
 package:
 	@echo "Building image ${APP_NAME} ${VERSION} ${GIT_COMMIT}"
-	docker build --build-arg VERSION=${VERSION} --build-arg GIT_COMMIT=${GIT_COMMIT}${GIT_DIRTY} -t ${DOCKER_REGISTRY}/${APP_NAME}:local .
+	docker build --build-arg VERSION=${VERSION} --build-arg GIT_COMMIT=${GIT_COMMIT}${GIT_DIRTY} -t ${IMAGE_REGISTRY}/${APP_NAME}:local .
 
 .PHONY: tag
 tag: package
 	@echo "Tagging: latest ${VERSION} ${GIT_COMMIT}"
-	docker tag ${DOCKER_REGISTRY}/${APP_NAME}:local ${DOCKER_REGISTRY}/${APP_NAME}:${GIT_COMMIT}
-	docker tag ${DOCKER_REGISTRY}/${APP_NAME}:local ${DOCKER_REGISTRY}/${APP_NAME}:${VERSION}
-	docker tag ${DOCKER_REGISTRY}/${APP_NAME}:local ${DOCKER_REGISTRY}/${APP_NAME}:latest
+	docker tag ${IMAGE_REGISTRY}/${APP_NAME}:local ${IMAGE_REGISTRY}/${APP_NAME}:${GIT_COMMIT}
+	docker tag ${IMAGE_REGISTRY}/${APP_NAME}:local ${IMAGE_REGISTRY}/${APP_NAME}:${VERSION}
+	docker tag ${IMAGE_REGISTRY}/${APP_NAME}:local ${IMAGE_REGISTRY}/${APP_NAME}:latest
 
 .PHONY: push
 push: tag
 	@echo "Pushing Docker image to registry: latest ${VERSION} ${GIT_COMMIT}"
-	docker push ${DOCKER_REGISTRY}/${APP_NAME}:${GIT_COMMIT}
-	docker push ${DOCKER_REGISTRY}/${APP_NAME}:${VERSION}
-	docker push ${DOCKER_REGISTRY}/${APP_NAME}:latest
+	docker push ${IMAGE_REGISTRY}/${APP_NAME}:${GIT_COMMIT}
+	docker push ${IMAGE_REGISTRY}/${APP_NAME}:${VERSION}
+	docker push ${IMAGE_REGISTRY}/${APP_NAME}:latest
 
 .PHONY: deploy
 deploy:
@@ -56,7 +56,7 @@ deploy:
 	helm upgrade ${APP_NAME} machtwatch/app --install \
 		--namespace ${TEAM} \
 		--values _infra/helm/${ENVIRONMENT}.yaml \
-		--set meta.env=${ENVIRONMENT},meta.maintainer=${TEAM},meta.version=${VERSION},image.repository=${REGISTRY_URL}/${APP_NAME},image.tag=${VERSION}
+		--set meta.env=${ENVIRONMENT},meta.maintainer=${TEAM},meta.version=${VERSION},image.repository=${IMAGE_REGISTRY}/${APP_NAME},image.tag=${VERSION}
 
 .PHONY: run
 run: build
