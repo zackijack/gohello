@@ -11,7 +11,7 @@ WORKDIR /code/gohello
 RUN make build
 
 # Final stage
-FROM zackijack/debian-base-image:latest
+FROM zackijack/debian-base-image:buster
 
 LABEL maintainer="m.zackky@gmail.com"
 
