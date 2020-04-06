@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/kitabisa/gohello/internal/app/commons"
-	"github.com/kitabisa/gohello/internal/app/service"
+	"github.com/zackijack/gohello/internal/app/commons"
+	"github.com/zackijack/gohello/internal/app/service"
 )
 
 // HandlerOption option for handler, including all service

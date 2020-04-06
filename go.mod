@@ -1,4 +1,4 @@
-module github.com/kitabisa/gohello
+module github.com/zackijack/gohello
 
 go 1.13
 

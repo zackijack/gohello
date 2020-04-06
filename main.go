@@ -1,13 +1,11 @@
 package main
 
 import (
-	
-	"github.com/kitabisa/gohello/cmd"
+	"github.com/zackijack/gohello/cmd"
 )
 
 func main() {
 
-    
-    cmd.Execute()
-	
+	cmd.Execute()
+
 }

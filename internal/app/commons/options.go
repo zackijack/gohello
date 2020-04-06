@@ -1,8 +1,8 @@
 package commons
 
 import (
-	"github.com/kitabisa/gohello/config"
 	"github.com/kitabisa/perkakas/v2/log"
+	"github.com/zackijack/gohello/config"
 )
 
 // Options common option for all object that needed

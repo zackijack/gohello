@@ -1,7 +1,7 @@
 package appcontext
 
 import (
-	"github.com/kitabisa/gohello/config"
+	"github.com/zackijack/gohello/config"
 )
 
 // AppContext the app context struct

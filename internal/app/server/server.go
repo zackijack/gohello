@@ -7,10 +7,10 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/kitabisa/gohello/internal/app/commons"
-	"github.com/kitabisa/gohello/internal/app/handler"
-	"github.com/kitabisa/gohello/internal/app/service"
 	"github.com/sirupsen/logrus"
+	"github.com/zackijack/gohello/internal/app/commons"
+	"github.com/zackijack/gohello/internal/app/handler"
+	"github.com/zackijack/gohello/internal/app/service"
 )
 
 // IServer interface for server

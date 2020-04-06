@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/kitabisa/gohello/internal/app/commons"
+import "github.com/zackijack/gohello/internal/app/commons"
 
 // Option anything any repo object needed
 type Option struct {

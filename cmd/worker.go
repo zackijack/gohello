@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/kitabisa/gohello/config"
+	"github.com/zackijack/gohello/config"
 
 	"github.com/spf13/cobra"
 )

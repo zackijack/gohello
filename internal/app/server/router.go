@@ -5,12 +5,12 @@ import (
 
 	"github.com/go-chi/chi"
 	cmiddleware "github.com/go-chi/chi/middleware"
-	"github.com/kitabisa/gohello/internal/app/commons"
-	"github.com/kitabisa/gohello/internal/app/handler"
-	"github.com/kitabisa/gohello/version"
 	phttp "github.com/kitabisa/perkakas/v2/http"
 	pmiddleware "github.com/kitabisa/perkakas/v2/middleware"
 	pstructs "github.com/kitabisa/perkakas/v2/structs"
+	"github.com/zackijack/gohello/internal/app/commons"
+	"github.com/zackijack/gohello/internal/app/handler"
+	"github.com/zackijack/gohello/version"
 )
 
 // Router a chi mux

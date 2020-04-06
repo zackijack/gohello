@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kitabisa/gohello/config"
-	"github.com/kitabisa/gohello/internal/app/commons"
-	"github.com/kitabisa/gohello/internal/app/repository"
-	"github.com/kitabisa/gohello/internal/app/server"
-	"github.com/kitabisa/gohello/internal/app/service"
 	"github.com/kitabisa/perkakas/v2/log"
 	"github.com/spf13/cobra"
+	"github.com/zackijack/gohello/config"
+	"github.com/zackijack/gohello/internal/app/commons"
+	"github.com/zackijack/gohello/internal/app/repository"
+	"github.com/zackijack/gohello/internal/app/server"
+	"github.com/zackijack/gohello/internal/app/service"
 )
 
 // rootCmd represents the base command when called without any subcommands

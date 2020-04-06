@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/kitabisa/gohello/internal/app/commons"
-	"github.com/kitabisa/gohello/internal/app/repository"
+	"github.com/zackijack/gohello/internal/app/commons"
+	"github.com/zackijack/gohello/internal/app/repository"
 )
 
 // Option anything any service object needed
