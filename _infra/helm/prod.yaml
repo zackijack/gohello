@@ -1,0 +1,51 @@
+configMap:
+  mountPath: /opt/gohello/params
+
+server:
+  port: 8080
+
+  readiness:
+    path: /health_check
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 1Gi
+
+worker:
+  enabled: true
+
+  command:
+    - gohello
+  args:
+    - worker
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 1Gi
+
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+
+  tls:
+    - hosts:
+        - gohello.zackijack.com
+
+  hosts:
+    - host: gohello.zackijack.com
+      paths:
+        - "/"
+
+
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 20

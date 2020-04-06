@@ -1,32 +1,35 @@
-FROM debian:buster-slim
+# Build stage
+FROM golang:1.13-buster as build
 
-ENV TZ=Asia/Jakarta
+LABEL app="gohello"
+LABEL REPO="https://github.com/zackijack/gohello"
 
-RUN apt-get update \
-    && apt-get install -y \
-        bash \
-        ca-certificates \
-        dumb-init \
-        openssl \
-        tzdata
+ADD . /code/gohello
 
-RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && \
-	echo $TZ > /etc/timezone
+WORKDIR /code/gohello
+
+RUN make build
+
+# Final stage
+FROM zackijack/debian-base-image:latest
+
+LABEL maintainer="m.zackky@gmail.com"
 
 ARG GIT_COMMIT
 ARG VERSION
-LABEL REPO="https://github.com/pushm0v/gohello"
+
+LABEL app="gohello"
+LABEL REPO="https://github.com/zackijack/gohello"
 LABEL GIT_COMMIT=$GIT_COMMIT
 LABEL VERSION=$VERSION
 
-# Because of https://github.com/docker/docker/issues/14914
-ENV PATH=$PATH:/opt/gohello
+ENV PATH=$PATH:/opt/gohello/bin
 
-WORKDIR /opt/gohello
+WORKDIR /opt/gohello/bin
 
-COPY ./bin/gohello /opt/gohello/
+COPY --from=build /code/gohello/bin/gohello /opt/gohello/bin
 
-RUN chmod +x /opt/gohello/gohello
+RUN chmod +x /opt/gohello/bin/gohello
 
 # Create appuser
 RUN adduser --disabled-password --gecos '' gohello
@@ -34,4 +37,4 @@ USER gohello
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-CMD ["/opt/gohello/gohello"]
+CMD ["/opt/gohello/bin/gohello"]
