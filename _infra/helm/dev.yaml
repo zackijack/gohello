@@ -4,6 +4,9 @@ configMap:
 server:
   port: 8080
 
+  istio:
+    injected: true
+
   readiness:
     path: /health_check
 
@@ -44,3 +47,28 @@ ingress:
     - host: gohello.zackijack.dev
       paths:
         - "/"
+
+virtualService:
+  enabled: true
+
+  gateways:
+    - backend/backend
+
+  hosts:
+    - api.machtwatch.online
+
+  routes:
+    - match:
+        - uri:
+            prefix: /gohello/
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: gohello
+            port:
+              number: 80
+          weight: 100
