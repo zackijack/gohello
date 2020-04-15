@@ -52,7 +52,7 @@ virtualService:
   enabled: true
 
   gateways:
-    - backend
+    - backend/backend
 
   hosts:
     - api.machtwatch.online
